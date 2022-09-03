@@ -10,10 +10,6 @@ namespace Task2
         {
             if (args.Length != 1)
                 return false;
-            if (!args[0].Contains(@"\"))
-                return false;
-            if (args[0].Length<4)
-                return false;   
             if(!Directory.Exists(args[0]))
                 return false;
             else return true;

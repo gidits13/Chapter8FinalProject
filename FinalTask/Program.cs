@@ -4,37 +4,81 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 namespace FinalTask
 {
-    public class Students
+    [Serializable]
+    public class Student
     {
-        public string Name;
-        public string Group;
-        public DateTime BirthDate;
+        public string Name { get; set; }
+        public string Group { get; set; }
+        public DateTime DateOfBirth { get; set; }
 
 
     }
     internal class Program
     {
-        static void studensList(string path)
+        static bool CheckInputArgs(string[] args)
+        {
+            if (args.Length != 1)
+                return false;
+            if (!File.Exists(args[0]))
+                return false;
+            else return true;
+        }
+        static  Student[] studensList(string path)
         {
             if (File.Exists(path))
             {
                 BinaryFormatter formatter = new BinaryFormatter();
                 using (FileStream fs = new FileStream(path, FileMode.OpenOrCreate))
                 {
-                    Students[] stud = (Students[])formatter.Deserialize(fs);
+                    Student[] listOfStudents =  (Student[])formatter.Deserialize(fs);
 
-                    foreach (Students students in stud)
+                    // foreach (Student s in listOfStudents)
+                    // {
+                    //    Console.WriteLine($"Имя: {s.Name} --- группа: {s.Group}----- ДР: {s.DateOfBirth} ");
+                    //}
+                    return listOfStudents;
+                }
+   
+            }
+            return null;
+        }
+
+        static void SortStudents(Student[] listOfStudents)
+        {
+            var desktop = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
+
+            foreach (var s in listOfStudents)
+            {
+                if (!File.Exists(desktop+@"\"+s.Group+".txt"))
+                {
+                    using (StreamWriter sw = File.CreateText(desktop + @"\" + s.Group + ".txt"))
                     {
-                        Console.WriteLine($"Имя: {s.Name} --- группа: {s.Group}");
+                        sw.WriteLine(s.Name + ", " + s.Group + ", " + s.DateOfBirth);
                     }
                 }
+                else
+                {
+                    using (StreamWriter sw = File.AppendText(desktop + @"\" + s.Group + ".txt"))
+                    {
+                        sw.WriteLine(s.Name + ", " + s.Group + ", " + s.DateOfBirth);
+                    }
+                }
+
             }
         }
         static void Main(string[] args)
         {
-            string path = @"c:\2\Students.dat";
-            studensList(path);
-            Console.WriteLine("Hello, World!");
+            if (!CheckInputArgs(args))
+            {
+                Console.WriteLine("Ошибка во входных данных");
+                return;
+
+            }
+            string path = args[0];
+            // string path = @"c:\2\Students.dat";
+            var studentsList = studensList(path);
+            SortStudents(studentsList);
+            
         }
     }
 }

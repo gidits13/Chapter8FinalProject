@@ -44,10 +44,6 @@ namespace Task3
         {
             if (args.Length != 1)
                 return false;
-            if (!args[0].Contains(@"\"))
-                return false;
-            if (args[0].Length < 4)
-                return false;
             if (!Directory.Exists(args[0]))
                 return false;
             else return true;
@@ -97,7 +93,7 @@ namespace Task3
                 Console.WriteLine("Ошибка во входных данных");
                 return;
             }
-            int timer = 1;
+            int timer = 30;
             string path = args[0];
             decimal size = 0;
             int count = 0;

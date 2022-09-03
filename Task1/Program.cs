@@ -10,10 +10,6 @@ namespace Task1
         {
             if (args.Length != 1)
                 return false;
-            if (!args[0].Contains(@"\"))
-                return false;
-            if (args[0].Length < 4)
-                return false;
             if (!Directory.Exists(args[0]))
                 return false;
             else return true;
@@ -91,7 +87,7 @@ namespace Task1
                 return;
 
             }
-            int timer = 1;
+            int timer = 30;
             string path = args[0];
             FileDel(path, timer);
             
